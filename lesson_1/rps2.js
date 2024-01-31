@@ -32,9 +32,10 @@ function createHuman() {
       let move;
 
       while (true) {
-        console.log("Please choose rock, paper, or scissors:");
+        console.log("Please choose rock, paper, scissors, spock, or lizard:");
         move = rlsync.question();
-        if (["rock", "paper", "scissors"].includes(move)) break;
+        if (["rock", "paper", "scissors", "spock", "lizard"].includes(move))
+          break;
         console.log("Sorry, invalid choice.");
       }
 
@@ -50,7 +51,7 @@ function createComputer() {
   let computerObject = {
     choose() {
       let move;
-      const plays = ["rock", "paper", "scissors"];
+      const plays = ["rock", "paper", "scissors", "spock", "lizard"];
 
       this.choice = plays[Math.floor(Math.random() * plays.length)];
     },
@@ -65,7 +66,7 @@ const RPSGame = {
   player2: createComputer(),
 
   displayWelcome() {
-    console.log("Welcome to Rock, Paper, Scissors!");
+    console.log("Welcome to Rock, Paper, Scissors, Spock, Lizard!");
   },
   displayGoodbye() {
     console.log("Thanks for playing! Come Again!");
@@ -79,16 +80,27 @@ const RPSGame = {
     console.log(`Player two chose ${p2Choice}`);
 
     if (
-      (p1Choice === "rock" && p2Choice === "scissors") ||
-      (p1Choice === "paper" && p2Choice === "rock") ||
-      (p1Choice === "scissors" && p2Choice === "paper")
+      (p1Choice === "rock" &&
+        (p2Choice === "scissors" || p2Choice === "lizard")) ||
+      (p1Choice === "paper" && (p2Choice === "rock" || p2Choice === "spock")) ||
+      (p1Choice === "scissors" &&
+        (p2Choice === "paper" || p2Choice === "lizard")) ||
+      (p1Choice === "spock" &&
+        (p2Choice === "scissors" || p2Choice === "rock")) ||
+      (p1Choice === "lizard" && (p2Choice === "spock" || p2Choice === "paper"))
     ) {
       console.log("You win!");
       this.score[0] += 1;
     } else if (
-      (p1Choice === "rock" && p2Choice === "paper") ||
-      (p1Choice === "paper" && p2Choice === "scissors") ||
-      (p1Choice === "scissors" && p2Choice === "rock")
+      (p1Choice === "rock" && (p2Choice === "paper" || p2Choice === "spock")) ||
+      (p1Choice === "paper" &&
+        (p2Choice === "scissors" || p2Choice === "lizard")) ||
+      (p1Choice === "scissors" &&
+        (p2Choice === "rock" || p2Choice === "spock")) ||
+      (p1Choice === "spock" &&
+        (p2Choice === "lizard" || p2Choice === "paper")) ||
+      (p1Choice === "lizard" &&
+        (p2Choice === "rock" || p2Choice === "scissors"))
     ) {
       console.log("Computer wins!");
       this.score[1] += 1;
@@ -106,9 +118,9 @@ const RPSGame = {
   },
 
   play() {
-    this.displayWelcome();
     do {
       console.clear();
+      this.displayWelcome();
       this.player1.choose();
       this.player2.choose();
       this.displayWinner();
