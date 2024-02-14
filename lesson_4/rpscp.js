@@ -1,72 +1,44 @@
-/* 
-Rock, Paper, Scissors is a game in which two players each make a choice between the three namesakes of the game. 
-The winner is decided by comparing their choices using these rules:
- - If one player chooses rock and the other scissors, the player who chose rock wins
- - If one player chooses scissors and the other paper, the player who chose paper wins
- - If one player chooses paper and the other rock, the player who paper paper wins
- - If both players chose the same, the result is a tie
-
- Nouns: player, choice, rule
- Verbs: choose, compare
-
- Player : choose
- Choice : 
- Rule : 
-
- Referee: compare
-*/
-
 let rlsync = require("readline-sync");
 
-function createPlayer() {
-  return {
-    choice: null,
-  };
+function Player() {
+  this.choice = null;
 }
 
-function createHuman() {
-  let playerObject = createPlayer();
-
-  let humanObject = {
-    choose() {
-      let move;
-
-      while (true) {
-        console.log("Please choose rock, paper, scissors, spock, or lizard:");
-        move = rlsync.question();
-        if (["rock", "paper", "scissors", "spock", "lizard"].includes(move))
-          break;
-        console.log("Sorry, invalid choice.");
-      }
-
-      this.choice = move;
-    },
-  };
-
-  return Object.assign(playerObject, humanObject);
-}
-function createComputer() {
-  let playerObject = createPlayer();
-
-  let computerObject = {
-    choose() {
-      let move;
-      const plays = ["rock", "paper", "scissors", "spock", "lizard"];
-
-      this.choice = plays[Math.floor(Math.random() * plays.length)];
-    },
-  };
-
-  return Object.assign(playerObject, computerObject);
+function Human() {
+  Player.call(this);
 }
 
-const RPSGame = {
-  //Properties
-  score: [0, 0],
-  player1: createHuman(),
-  player2: createComputer(),
+Human.prototype.choose = function () {
+  let move;
 
-  //Methods
+  while (true) {
+    console.log("Please choose rock, paper, scissors, spock, or lizard:");
+    move = rlsync.question();
+    if (["rock", "paper", "scissors", "spock", "lizard"].includes(move)) break;
+    console.log("Sorry, invalid choice.");
+  }
+
+  this.choice = move;
+};
+
+function Computer() {
+  Player.call(this);
+}
+
+Computer.prototype.choose = function () {
+  let move;
+  const plays = ["rock", "paper", "scissors", "spock", "lizard"];
+
+  this.choice = plays[Math.floor(Math.random() * plays.length)];
+};
+
+function RPSGame() {
+  this.player1 = new Human();
+  this.player2 = new Computer();
+  this.score = [0, 0];
+}
+
+RPSGame.prototype = {
   displayWelcome() {
     console.log("Welcome to Rock, Paper, Scissors, Spock, Lizard!");
   },
@@ -131,4 +103,7 @@ const RPSGame = {
   },
 };
 
-RPSGame.play();
+RPSGame.prototype.constructor = RPSGame;
+
+let game = new RPSGame();
+game.play();
