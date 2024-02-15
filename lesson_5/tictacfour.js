@@ -115,7 +115,7 @@ TTTGame.POSSIBLE_WINNING_ROWS = [
 ];
 
 TTTGame.prototype.displayWelcome = function () {
-  console.log("Welcome to Tic-Tac-Toe 3.0: Clasical Code");
+  console.log("Welcome to Tic-Tac-Toe 4.0: Prototypal Boogaloo");
 };
 
 TTTGame.prototype.humanTurn = function () {
